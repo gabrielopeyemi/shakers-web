@@ -26,23 +26,20 @@ export default function RunningGamesPage() {
     const GetAllGamesCreated = async () => {
         try{
             const response: any = await GetAllGames(JSON.parse(token ? token : ''));
-            console.log(response)
             setGamesList(response);
         } catch(error){
-            console.log({error})
+            
         }
     }
 
     const joinGame = async (gameId: string) => {
         try{
             const response = await JoinGameQuery({gameId, token: JSON.parse(token ? token : '')});
-            console.log({ response });
             if(response.data.data.success){
                 return history.push('/play-ground')
             }
 
         }catch(error: any){
-            console.log({error})
             return alert(error.response.data.error)
         }
     };
@@ -51,7 +48,8 @@ export default function RunningGamesPage() {
     return (
         <Container>
             {GamesList.length > 0 ?(<Auth>
-                <h4>Games</h4>
+                <h4>Running Games</h4>
+                <span>Join a games</span>
                 <div>
                     {GamesList.map((game: any, i:number)=>{
                         return(

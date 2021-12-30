@@ -11,8 +11,8 @@ import { Auth, Container, InputDivStyled, InputLabelStyled, InputStyled } from '
 export default function LoginPages() {
     // const dispatch = useDispatch();
     let history = useHistory();
-    const [username, setUsername] = React.useState<string>('gabriel');
-    const [password, setPassword] = React.useState<string>('Opeyemi@12');
+    const [username, setUsername] = React.useState<string>('');
+    const [password, setPassword] = React.useState<string>('');
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
     const CheckIfUserIsInAGame = async (token: string) =>{
@@ -24,7 +24,6 @@ export default function LoginPages() {
                 if(main.data === null){
                     return history.push('/dashboard')
                 }
-                console.log({game: main.data._id})
 
                 if(main.data.joiner === undefined){
                     return history.push('/waiting-for-team-mate');
@@ -33,7 +32,7 @@ export default function LoginPages() {
                 return;
             }
         }catch(error){
-            console.log({error})
+           
         }
     }
 
