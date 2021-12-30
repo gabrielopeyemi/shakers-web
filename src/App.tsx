@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import 'antd/dist/antd.css';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+} from "react-router-dom";
+import LoginPages from "./Pages/LoginPages/LoginPages";
+import RegisterPages from "./Pages/RegisterPages/RegisterPages";
+import StartPages from "./Pages/StartPages/StartPages";
 
-function App() {
+
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+        <Switch>
+          {/* <Route path="/" component={StartPages} exact /> */}
+          <Route path="/" component={LoginPages} exact />
+          <Route path="/register" component={RegisterPages} exact />
+        </Switch>
+    </Router>
   );
 }
 
-export default App;
