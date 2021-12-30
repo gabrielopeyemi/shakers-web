@@ -13,6 +13,7 @@ import DashboardPages from "./Pages/DashboardPages/DashboardPages";
 import AwaitingPages from "./Pages/AwaitingPages/AwaitingPages";
 import CreateNewGamePage from "./Pages/CreateNewGamePage/CreateNewGamePage";
 import PlaygroundPage from "./Pages/PlaygrundPage/PlaygroundPage";
+import RunningGamesPage from "./Pages/RunningGamesPage/RunningGamesPage";
 
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
           <Route path="/waiting-for-team-mate" component={AwaitingPages} exact />
           <Route path="/create-new-game" component={CreateNewGamePage} exact />
           <Route path="/play-ground" component={PlaygroundPage} exact />
+          <Route path="/running-games" component={RunningGamesPage} exact />
         </Switch>
     </Router>
   );

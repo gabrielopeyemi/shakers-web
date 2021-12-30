@@ -18,7 +18,7 @@ export default function AwaitingPages({}: Props): ReactElement {
     
     let history = useHistory();
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
-    let RunningGameID = localStorage.getItem('TOKEN');
+    let token = localStorage.getItem('TOKEN');
     let gameId = localStorage.getItem('GAMEID');
 
     React.useEffect(() => {
@@ -29,7 +29,7 @@ export default function AwaitingPages({}: Props): ReactElement {
 
     const CheckIfThereisAJoiner = async () => {
         try{
-            const response = await CheckIfUserIsInAGameQuery(JSON.parse(RunningGameID ? RunningGameID : ''));
+            const response = await CheckIfUserIsInAGameQuery(JSON.parse(token ? token : ''));
             const main = response.data.data.data;
             if(main.joiner === undefined){
                 return;
@@ -45,7 +45,7 @@ export default function AwaitingPages({}: Props): ReactElement {
 
     const handleEndGame = async () =>{
         try{
-            const response = await EndGameQuery({token: JSON.parse(RunningGameID ? RunningGameID : ''), gameId: JSON.parse(gameId ? gameId : '')});
+            const response = await EndGameQuery({token: JSON.parse(token ? token : ''), gameId: JSON.parse(gameId ? gameId : '')});
             if(response.data.data.success){
                 localStorage.removeItem('GAMEID');
                 return history.push('/create-new-game')

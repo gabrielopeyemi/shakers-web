@@ -50,7 +50,7 @@ export default function LoginPages() {
                     <InputStyled 
                         type='text' 
                         value={username} 
-                        onClick={(e: any) => setUsername(e.target.value)}
+                        onChange={(e: any) => setUsername(e.target.value)}
                     />
                 </InputDivStyled>
                 <InputDivStyled>
@@ -58,7 +58,7 @@ export default function LoginPages() {
                     <InputStyled 
                         type='password' 
                         value={password} 
-                        onClick={(e: any) => setPassword(e.target.value)}
+                        onChange={(e: any) => setPassword(e.target.value)}
                     />
                 </InputDivStyled>
                 <ButtonWithLoader onClick={handleSignIn} isLoading={isLoading}/>

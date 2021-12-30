@@ -17,7 +17,7 @@ export default function DashboardPages({}: Props): ReactElement {
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
     const handleJoinGame = () =>{
-        return history.push('/play-ground')
+        return history.push('/running-games')
     };
 
     const handleCreateGame = () =>{
