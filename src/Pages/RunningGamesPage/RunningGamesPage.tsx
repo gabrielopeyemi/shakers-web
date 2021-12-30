@@ -8,6 +8,7 @@ import { GetAllGames } from '../../Queries/GetAllGames';
 import { JoinGameQuery } from '../../Queries/JoinGameQuery';
 import { LoginQuery } from '../../Queries/LoginQueries';
 import { Auth, Container, InputDivStyled, InputLabelStyled, InputStyled } from '../main.styles'
+import { ViewList } from './RunningGamesPage.style';
 
 export default function RunningGamesPage() {
     // const dispatch = useDispatch();
@@ -52,13 +53,13 @@ export default function RunningGamesPage() {
                 <div>
                     {GamesList.map((game: any, i:number)=>{
                         return(
-                            <div key={i} onChange={()=> joinGame(game._id)}>
+                            <ViewList key={i} onClick={()=> joinGame(game._id)}>
                                 <div>
                                     <div>{game.starter ? game.starter.userName : 'ju'}</div>
                                     <div>{game.starter ? game.amount : 'ju'}</div>
                                 </div>
                                 <button>Join Game</button>
-                            </div>
+                            </ViewList>
                         )
                     })}
                 </div>
