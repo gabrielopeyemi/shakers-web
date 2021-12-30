@@ -53,7 +53,7 @@ export default function CreateNewGamePage() {
                         value={amount} 
                     />
                 </InputDivStyled>
-                <ButtonWithLoader onClick={handleCreateGame} isLoading={isLoading}/>
+                <ButtonWithLoader onClick={handleCreateGame} isLoading={isLoading} title='create game'/>
             </Auth>
             <ToastComponents />
         </Container>

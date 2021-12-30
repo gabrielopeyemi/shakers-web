@@ -46,10 +46,12 @@ export default function RunningGamesPage() {
             return alert(error.response.data.error)
         }
     };
+
+    
     return (
         <Container>
-            <Auth>
-                <h4>Login to Shakers</h4>
+            {GamesList.length > 0 ?(<Auth>
+                <h4>Games</h4>
                 <div>
                     {GamesList.map((game: any, i:number)=>{
                         return(
@@ -63,7 +65,12 @@ export default function RunningGamesPage() {
                         )
                     })}
                 </div>
-            </Auth>
+            </Auth>) : (
+                <div>
+                    <div>No games running, create a game</div>
+                    <ButtonWithLoader title='create game' onClick={() => history.push('/create-new-game')} isLoading={isLoading}/>
+                </div>
+            )}
             <ToastComponents />
         </Container>
     )

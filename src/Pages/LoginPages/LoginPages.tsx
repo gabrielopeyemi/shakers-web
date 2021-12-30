@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ButtonWithLoader from '../../Component/ButtonWithLoader/ButtonWithLoader';
 import { ToastComponents, ToastUI } from '../../Component/Toast';
+import { CheckIfUserIsInAGameQuery } from '../../Queries/CheckIfUserIsInAGameQuery';
 import { LoginQuery } from '../../Queries/LoginQueries';
 import { Auth, Container, InputDivStyled, InputLabelStyled, InputStyled } from '../main.styles'
 
@@ -13,6 +14,28 @@ export default function LoginPages() {
     const [username, setUsername] = React.useState<string>('gabriel');
     const [password, setPassword] = React.useState<string>('Opeyemi@12');
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+    const CheckIfUserIsInAGame = async (token: string) =>{
+        
+        try{
+            const response = await CheckIfUserIsInAGameQuery(token);
+            const main = response.data.data
+            if(main.success){
+                if(main.data === null){
+                    return history.push('/dashboard')
+                }
+                console.log({game: main.data._id})
+
+                if(main.data.joiner === undefined){
+                    return history.push('/waiting-for-team-mate');
+                }
+                history.push('/play-ground')
+                return;
+            }
+        }catch(error){
+            console.log({error})
+        }
+    }
 
 
     const handleSignIn = async () =>{
@@ -33,7 +56,8 @@ export default function LoginPages() {
                 if(!GameRunning){
                     return history.push('/dashboard')
                 }
-                return history.push('/waiting-for-team-mate')
+                return CheckIfUserIsInAGame(response.data.data.data.token)
+                
             }
         }catch(error: any){
             setIsLoading(false)

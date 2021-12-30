@@ -12,7 +12,7 @@ import StartPages from "./Pages/StartPages/StartPages";
 import DashboardPages from "./Pages/DashboardPages/DashboardPages";
 import AwaitingPages from "./Pages/AwaitingPages/AwaitingPages";
 import CreateNewGamePage from "./Pages/CreateNewGamePage/CreateNewGamePage";
-import PlaygroundPage from "./Pages/PlaygrundPage/PlaygroundPage";
+import PlaygroundPage from "./Pages/PlaygroundPage/PlaygroundPage";
 import RunningGamesPage from "./Pages/RunningGamesPage/RunningGamesPage";
 
 
