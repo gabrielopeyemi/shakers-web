@@ -16,14 +16,14 @@ export default function CreateNewGamePage() {
 
     const handleCreateGame = async () =>{
         setIsLoading(true)
-        let disk = localStorage.getItem('TOKEN')
+        let RunningGameID = localStorage.getItem('TOKEN')
 
-        if ( !amount ){
+        if (!amount){
             setIsLoading(false)
             return alert('input your details')
         }
         try{
-            const response = await CreateAGameQuery({amount, token: JSON.parse(disk ? disk : '')});
+            const response = await CreateAGameQuery({amount, token: JSON.parse(RunningGameID ? RunningGameID : '')});
             if(response.data.data.success){
                 setIsLoading(false)
                 localStorage.setItem('GAMEID', JSON.stringify(response.data.data.data._id));
@@ -54,7 +54,6 @@ export default function CreateNewGamePage() {
                     />
                 </InputDivStyled>
                 <ButtonWithLoader onClick={handleCreateGame} isLoading={isLoading}/>
-                
             </Auth>
             <ToastComponents />
         </Container>

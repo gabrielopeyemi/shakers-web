@@ -16,6 +16,7 @@ export default function LoginPages() {
 
 
     const handleSignIn = async () =>{
+        const GameRunning = localStorage.getItem('GAMEID');
         setIsLoading(true)
 
         if (!username || !password ){
@@ -29,7 +30,10 @@ export default function LoginPages() {
                 localStorage.setItem('USERDETAILS', JSON.stringify(response.data.data.data.userDetails));
                 localStorage.setItem('ISLOGGIN', JSON.stringify(response.data.data.data.loggedIn));
                 localStorage.setItem('TOKEN', JSON.stringify(response.data.data.data.token));
-                return history.push('/dashboard')
+                if(!GameRunning){
+                    return history.push('/dashboard')
+                }
+                return history.push('/waiting-for-team-mate')
             }
         }catch(error: any){
             setIsLoading(false)
