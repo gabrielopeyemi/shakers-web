@@ -1,6 +1,7 @@
 import { Alert } from 'antd';
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import ButtonWithLoader from '../../Component/ButtonWithLoader/ButtonWithLoader';
 import { ToastComponents, ToastUI } from '../../Component/Toast';
 import { LoginQuery } from '../../Queries/LoginQueries';
@@ -8,6 +9,7 @@ import { Auth, Container, InputDivStyled, InputLabelStyled, InputStyled } from '
 
 export default function LoginPages() {
     // const dispatch = useDispatch();
+    let history = useHistory();
     const [username, setUsername] = React.useState<string>('gabriel');
     const [password, setPassword] = React.useState<string>('Opeyemi@12');
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -18,24 +20,19 @@ export default function LoginPages() {
 
         if (!username || !password ){
             setIsLoading(false)
-            // return ToastAndroid.showWithGravity('input your details', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+            return alert('field is empty')
         }
         try{
             const response = await LoginQuery({username, password});
             if(response.data.data.success){
                 setIsLoading(false)
-                console.log({response: response.data.data.data})
                 localStorage.setItem('USERDETAILS', JSON.stringify(response.data.data.data.userDetails));
                 localStorage.setItem('ISLOGGIN', JSON.stringify(response.data.data.data.loggedIn));
                 localStorage.setItem('TOKEN', JSON.stringify(response.data.data.data.token));
+                return history.push('/dashboard')
             }
         }catch(error: any){
             setIsLoading(false)
-            // ToastUI({
-            //     type: 'error',
-            //     message: error.data.error,
-            //   });
-            console.log({error: error})
             alert(error.response.data.error)
         }
     }

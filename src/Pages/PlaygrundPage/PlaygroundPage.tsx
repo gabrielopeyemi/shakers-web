@@ -31,14 +31,11 @@ export default function PlaygroundPage({}: Props): ReactElement {
         let b = getNewNumber()
         setDiceTwo(a);
         setDiceOne(b);
-        console.log({a, b})
         setTimeout(()=> {
             let sum = a +  b;
-            console.log({sum})
                 setRolling(false)
                 return;
         }, 2000)
-        console.log({diceOne, diceTwo})
     };
 
 

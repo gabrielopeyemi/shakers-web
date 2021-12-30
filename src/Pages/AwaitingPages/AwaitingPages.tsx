@@ -31,30 +31,26 @@ export default function AwaitingPages({}: Props): ReactElement {
         try{
             const response = await CheckIfUserIsInAGameQuery(JSON.parse(disk ? disk : ''));
             const main = response.data.data.data;
-            console.log({response: response.data.data.data})
             if(main.joiner === undefined){
-                console.log('there is no joiner')
                 return;
             }
             if(!main){
                 return <Redirect to="/create-new-game"/>;
             }
-            console.log('There is a joiner')
             return history.push('/play-ground')
         }catch(error){
-            console.log({error})
+            
         }
     }
 
     const handleEndGame = async () =>{
         try{
             const response = await EndGameQuery({token: JSON.parse(disk ? disk : ''), gameId: JSON.parse(gameId ? gameId : '')});
-            console.log({response})
             if(response.data.data.success){
                 return history.push('/create-new-game')
             }
         }catch(error){
-            console.log({error})
+            
         }
     }
     return (

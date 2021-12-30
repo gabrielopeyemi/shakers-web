@@ -25,7 +25,6 @@ export default function RegisterPages({}: Props): ReactElement {
             const response = await CreateQueries({userName: username, password});
             if(response.data.data.success){
                 setIsLoading(false)
-                console.log({response: response.data.data.data})
                 localStorage.setItem('USERDETAILS', JSON.stringify(response.data.data.data.userDetails));
                 localStorage.setItem('ISLOGGIN', JSON.stringify(response.data.data.data.loggedIn));
                 localStorage.setItem('TOKEN', JSON.stringify(response.data.data.data.token));
@@ -33,7 +32,6 @@ export default function RegisterPages({}: Props): ReactElement {
             }
         }catch(error: any){
             setIsLoading(false)
-            console.log({error: error.response})
             // ToastUI({
             //     type: 'error',
             //     message: error.response.data.error,

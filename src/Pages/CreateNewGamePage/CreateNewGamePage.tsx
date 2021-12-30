@@ -24,16 +24,13 @@ export default function CreateNewGamePage() {
         }
         try{
             const response = await CreateAGameQuery({amount, token: JSON.parse(disk ? disk : '')});
-            console.log({response})
             if(response.data.data.success){
                 setIsLoading(false)
-                console.log({response: response.data.data.data})
                 localStorage.setItem('GAMEID', JSON.stringify(response.data.data.data._id));
                 return history.push('/waiting-for-team-mate')
             }
         }catch(error: any){
             setIsLoading(false)
-            console.log({error: error})
             if(!error.response.data.success){
                 return alert("Oops! you can't create a new game, it's like you are in a game")
             }

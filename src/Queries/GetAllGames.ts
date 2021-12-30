@@ -6,7 +6,6 @@ export const GetAllGames = async (props: string) => {
       url: `/games/list`,
       token: props,
     });
-    console.log({response: response.data.data.data})
 
     const customerList = response.data.data.data.filter(
       (cutomer: any) => !cutomer.joiner
