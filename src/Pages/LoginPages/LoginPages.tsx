@@ -1,6 +1,8 @@
+import { Alert } from 'antd';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import ButtonWithLoader from '../../Component/ButtonWithLoader/ButtonWithLoader';
+import { ToastComponents, ToastUI } from '../../Component/Toast';
 import { LoginQuery } from '../../Queries/LoginQueries';
 import { Auth, Container, InputDivStyled, InputLabelStyled, InputStyled } from '../main.styles'
 
@@ -29,7 +31,12 @@ export default function LoginPages() {
             }
         }catch(error: any){
             setIsLoading(false)
+            // ToastUI({
+            //     type: 'error',
+            //     message: error.data.error,
+            //   });
             console.log({error: error})
+            alert(error.response.data.error)
         }
     }
 
@@ -54,7 +61,9 @@ export default function LoginPages() {
                     />
                 </InputDivStyled>
                 <ButtonWithLoader onClick={handleSignIn} isLoading={isLoading}/>
+                
             </Auth>
+            <ToastComponents />
         </Container>
     )
 }

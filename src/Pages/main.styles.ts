@@ -2,6 +2,7 @@ import styled  from "styled-components";
 
 export const Auth = styled.div`
     min-width: 400px;
+    
 `;
 
 export const Container = styled.div`
