@@ -46,7 +46,9 @@ export default function RunningGamesPage() {
 
     
     return (
-        <Container>
+        <div style={{
+            margin: 30,
+        }}>
             {GamesList.length > 0 ?(<Auth>
                 <h4>Running Games</h4>
                 <span>Join a games</span>
@@ -70,6 +72,6 @@ export default function RunningGamesPage() {
                 </div>
             )}
             <ToastComponents />
-        </Container>
+        </div>
     )
 }

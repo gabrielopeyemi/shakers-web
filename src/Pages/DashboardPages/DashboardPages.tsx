@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import ButtonWithLoader from '../../Component/ButtonWithLoader/ButtonWithLoader'
@@ -11,9 +11,11 @@ interface Props {
 }
 
 export default function DashboardPages({}: Props): ReactElement {
+    useEffect(() => {
+        
+        
+    }, [])
     let history = useHistory();
-    const [username, setUsername] = React.useState<string>('gabriel');
-    const [password, setPassword] = React.useState<string>('Opeyemi@12');
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
     const handleJoinGame = () =>{
