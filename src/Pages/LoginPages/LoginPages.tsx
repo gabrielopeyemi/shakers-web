@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ButtonWithLoader from '../../Component/ButtonWithLoader/ButtonWithLoader';
 import { ToastComponents, ToastUI } from '../../Component/Toast';
+import { wrappedLocalStorage } from '../../functions';
 import { CheckIfUserIsInAGameQuery } from '../../Queries/CheckIfUserIsInAGameQuery';
 import { LoginQuery } from '../../Queries/LoginQueries';
 import { Auth, Container, InputDivStyled, InputLabelStyled, InputStyled } from '../main.styles'
@@ -15,54 +16,51 @@ export default function LoginPages() {
     const [password, setPassword] = React.useState<string>('');
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-    const CheckIfUserIsInAGame = async (token: string) =>{
-        
-        try{
+    const CheckIfUserIsInAGame = async (token: string) => {
+
+        try {
             const response = await CheckIfUserIsInAGameQuery(token);
-            const main = response.data.data
-            if(main.success){
-                if(main.data === null){
+            const main = response.data.data;
+            if (main.success) {
+                if (main.data === null) {
                     return history.push('/dashboard')
                 }
 
-                if(main.data.joiner === undefined){
+                if (main.data.joiner === undefined) {
                     return history.push('/waiting-for-team-mate');
                 }
                 history.push('/play-ground')
                 return;
             }
-        }catch(error){
-           
+        } catch (error) {
+
         }
     }
 
 
-    const handleSignIn = async () =>{
-        const GameRunning = localStorage.getItem('GAMEID');
+    const handleSignIn = async () => {
         setIsLoading(true)
-
-        if (!username || !password ){
+        if (!username || !password) {
             setIsLoading(false)
             return alert('field is empty')
         }
-        try{
-            const response = await LoginQuery({username, password});
-            if(response.data.data.success){
+        try {
+            const response = await LoginQuery({ username: username.toLowerCase(), password });
+            const responseData = response.data.data;
+            if (responseData.success) {
                 setIsLoading(false)
-                localStorage.setItem('USERDETAILS', JSON.stringify(response.data.data.data.userDetails));
-                localStorage.setItem('ISLOGGIN', JSON.stringify(response.data.data.data.loggedIn));
-                localStorage.setItem('TOKEN', JSON.stringify(response.data.data.data.token));
-                if(!GameRunning){
-                    return history.push('/dashboard')
-                }
-                return CheckIfUserIsInAGame(response.data.data.data.token)
-                
+                localStorage.setItem('USERDETAILS', JSON.stringify(responseData.data.userDetails));
+                localStorage.setItem('ISLOGGIN', JSON.stringify(responseData.data.loggedIn));
+                wrappedLocalStorage('TOKEN', responseData.data.token ).set();
+                return CheckIfUserIsInAGame(responseData.data.token);
             }
-        }catch(error: any){
+        } catch (error: any) {
             setIsLoading(false)
-            alert(error.response.data.error)
+            console.log(error.response.data.error);
+            alert("Not Conecting, Something went wrong");
         }
     }
+
 
     return (
         <Container>
@@ -70,22 +68,22 @@ export default function LoginPages() {
                 <h4>Login to Shakers</h4>
                 <InputDivStyled>
                     <InputLabelStyled>Username</InputLabelStyled>
-                    <InputStyled 
-                        type='text' 
-                        value={username} 
+                    <InputStyled
+                        type='text'
+                        value={username}
                         onChange={(e: any) => setUsername(e.target.value)}
                     />
                 </InputDivStyled>
                 <InputDivStyled>
                     <InputLabelStyled>Password</InputLabelStyled>
-                    <InputStyled 
-                        type='password' 
-                        value={password} 
+                    <InputStyled
+                        type='password'
+                        value={password}
                         onChange={(e: any) => setPassword(e.target.value)}
                     />
                 </InputDivStyled>
-                <ButtonWithLoader onClick={handleSignIn} isLoading={isLoading}/>
-                
+                <ButtonWithLoader title="login" onClick={handleSignIn} isLoading={isLoading} />
+                <ButtonWithLoader title="Register" onClick={() => history.push('/register')} />
             </Auth>
             <ToastComponents />
         </Container>

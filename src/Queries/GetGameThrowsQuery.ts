@@ -1,18 +1,12 @@
 import { server } from "../server-call/server";
 
 export interface PropsArgs {
-  amount: number;
   token?: string;
 }
-export const CreateAGameQuery = async (props: PropsArgs) => {
-  const { token, amount } = props;
-console.log({token, amount})
+export const getGameThrows = async (gameId: string, token: string) => {
   try {
     const data: any = await server.post({
-      url: `/games/start/${amount.toString()}`,
-      data: {
-        amount,
-      },
+      url: `/games/get-throws/${gameId}`,
       token,
     });
     return data;

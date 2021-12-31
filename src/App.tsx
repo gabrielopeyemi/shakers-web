@@ -20,7 +20,6 @@ export default function App() {
   return (
     <Router>
         <Switch>
-          {/* <Route path="/" component={StartPages} exact      /> */}
           <Route path="/" component={LoginPages} exact />
           <Route path="/register" component={RegisterPages} exact />
           <Route path="/dashboard" component={DashboardPages} exact />
