@@ -7,7 +7,8 @@ import { ToastComponents, ToastUI } from '../../Component/Toast';
 import { wrappedLocalStorage } from '../../functions';
 import { CheckIfUserIsInAGameQuery } from '../../Queries/CheckIfUserIsInAGameQuery';
 import { LoginQuery } from '../../Queries/LoginQueries';
-import { Auth, Container, InputDivStyled, InputLabelStyled, InputStyled } from '../main.styles'
+import { Auth, Container, InputDivStyled, InputLabelStyled, InputStyled } from '../main.styles';
+
 
 export default function LoginPages() {
     // const dispatch = useDispatch();
@@ -44,21 +45,22 @@ export default function LoginPages() {
             setIsLoading(false)
             return alert('field is empty')
         }
-        try {
-            const response = await LoginQuery({ username: username.toLowerCase(), password });
-            const responseData = response.data.data;
-            if (responseData.success) {
+    
+            ; try {
+                const response = await LoginQuery({ username: username.toLowerCase(), password });
+                const responseData = response.data.data;
+                if (responseData.success) {
+                    setIsLoading(false)
+                    localStorage.setItem('USERDETAILS', JSON.stringify(responseData.data.userDetails));
+                    localStorage.setItem('ISLOGGIN', JSON.stringify(responseData.data.loggedIn));
+                    wrappedLocalStorage('TOKEN', responseData.data.token).set();
+                    return CheckIfUserIsInAGame(responseData.data.token);
+                }
+            } catch (error: any) {
                 setIsLoading(false)
-                localStorage.setItem('USERDETAILS', JSON.stringify(responseData.data.userDetails));
-                localStorage.setItem('ISLOGGIN', JSON.stringify(responseData.data.loggedIn));
-                wrappedLocalStorage('TOKEN', responseData.data.token ).set();
-                return CheckIfUserIsInAGame(responseData.data.token);
+                console.log(error.response.data.error);
+                alert("Not Conecting, Something went wrong");
             }
-        } catch (error: any) {
-            setIsLoading(false)
-            console.log(error.response.data.error);
-            alert("Not Conecting, Something went wrong");
-        }
     }
 
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import 'antd/dist/antd.css';
 import {
   BrowserRouter as Router,
@@ -14,20 +14,32 @@ import AwaitingPages from "./Pages/AwaitingPages/AwaitingPages";
 import CreateNewGamePage from "./Pages/CreateNewGamePage/CreateNewGamePage";
 import PlaygroundPage from "./Pages/PlaygroundPage/PlaygroundPage";
 import RunningGamesPage from "./Pages/RunningGamesPage/RunningGamesPage";
+import { createWinnerStream, getPublicKey, wrappedLocalStorage } from "./functions";
+
 
 
 export default function App() {
+
+  useEffect(() => {
+createWinnerStream(1);
+    if (!(window as any)?.solana?.publicKey) {
+      getPublicKey();
+    }
+  }, [])
+
+ 
+
   return (
     <Router>
-        <Switch>
-          <Route path="/" component={LoginPages} exact />
-          <Route path="/register" component={RegisterPages} exact />
-          <Route path="/dashboard" component={DashboardPages} exact />
-          <Route path="/waiting-for-team-mate" component={AwaitingPages} exact />
-          <Route path="/create-new-game" component={CreateNewGamePage} exact />
-          <Route path="/play-ground" component={PlaygroundPage} exact />
-          <Route path="/running-games" component={RunningGamesPage} exact />
-        </Switch>
+      <Switch>
+        <Route path="/" component={LoginPages} exact />
+        <Route path="/register" component={RegisterPages} exact />
+        <Route path="/dashboard" component={DashboardPages} exact />
+        <Route path="/waiting-for-team-mate" component={AwaitingPages} exact />
+        <Route path="/create-new-game" component={CreateNewGamePage} exact />
+        <Route path="/play-ground" component={PlaygroundPage} exact />
+        <Route path="/running-games" component={RunningGamesPage} exact />
+      </Switch>
     </Router>
   );
 }

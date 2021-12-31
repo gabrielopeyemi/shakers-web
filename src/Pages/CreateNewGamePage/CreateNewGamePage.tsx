@@ -1,4 +1,4 @@
-import { Alert } from 'antd';
+import { Alert, Spin } from 'antd';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Redirect, useHistory } from 'react-router';
@@ -11,25 +11,29 @@ import { Auth, Container, InputDivStyled, InputLabelStyled, InputStyled } from '
 export default function CreateNewGamePage() {
 
     const token = wrappedLocalStorage('TOKEN').get();
-    const userDetails = wrappedLocalStorage('USERDETAILS').get(true);
     let history = useHistory();
     const [amount, setAmount] = useState<any>('');
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
 
     const handleCreateGame = async () => {
+        if (isLoading) {
+            alert("Please hold while game gets created created")
+            return;
+        }
         setIsLoading(true);
 
         if (!amount) {
             setIsLoading(false)
             return alert('input your details')
         }
+
         try {
             const response = await CreateAGameQuery({ amount, token });
             if (response.data.data.success) {
                 setIsLoading(false);
                 localStorage.setItem('GAMEID', response.data.data.data._id);
-                return history.push('/waiting-for-team-mate')
+                return history.push('/waiting-for-team-mate');
             }
         } catch (error: any) {
             setIsLoading(false);
@@ -38,10 +42,21 @@ export default function CreateNewGamePage() {
         }
     }
 
+    if (isLoading) {
+        return (<Container>
+            <Auth>
+                <h4>Creating game ......</h4>
+                <div><Spin /></div>
+                <ToastComponents />
+            </Auth>
+        </Container>);
+    }
+
     return (
         <Container>
             <Auth>
                 <h4>Create a game</h4>
+
                 <InputDivStyled>
                     <InputLabelStyled>Amount to bet</InputLabelStyled>
                     <InputStyled
@@ -49,6 +64,7 @@ export default function CreateNewGamePage() {
                         onChange={(e: any) => setAmount(e.target.value)}
                         placeholder={'How much do you want to bet'}
                         value={amount}
+                        disabled={isLoading}
                     />
                 </InputDivStyled>
                 <ButtonWithLoader onClick={handleCreateGame} isLoading={isLoading} title='create game' />

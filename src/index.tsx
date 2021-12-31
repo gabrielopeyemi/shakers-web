@@ -4,6 +4,14 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
+
+(window as any).global = window;
+
+// @ts-ignore
+window.Buffer = window.Buffer || require('buffer').Buffer;
+
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

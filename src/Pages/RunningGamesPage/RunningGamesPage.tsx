@@ -1,10 +1,10 @@
-import { Alert } from 'antd';
-import React from 'react';
+import { Alert, Spin } from 'antd';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import ButtonWithLoader from '../../Component/ButtonWithLoader/ButtonWithLoader';
 import { ToastComponents, ToastUI } from '../../Component/Toast';
-import { wrappedLocalStorage } from '../../functions';
+import { transferSOL, wrappedLocalStorage } from '../../functions';
 import { GetAllGames } from '../../Queries/GetAllGames';
 import { JoinGameQuery } from '../../Queries/JoinGameQuery';
 import { LoginQuery } from '../../Queries/LoginQueries';
@@ -18,35 +18,54 @@ export default function RunningGamesPage() {
     const [username, setUsername] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
     const [isLoading, setIsLoading] = React.useState<boolean>(false);
-    const [refreshing, setRefreshing] = React.useState(false)
+    const [refreshing, setRefreshing] = React.useState(false);
     const [GamesList, setGamesList] = React.useState([])
+    const [message, setMessage] = React.useState("Game List Loading");
     const token = wrappedLocalStorage('TOKEN').get();
 
+    useEffect(() => {
+        setIsLoading(true);
+        GetAllGamesCreated().then(() => {
+            setIsLoading(false);
+        })
+    }, []);
 
     useInterval(() => {
         GetAllGamesCreated();
-    }, 4000)
+    }, 5000)
 
     const GetAllGamesCreated = async () => {
         try {
             const response: any = await GetAllGames(token);
             setGamesList(response);
         } catch (error) {
-
+            console.log({ error })
+            alert(error)
         }
     }
 
-    const joinGame = async (gameId: string) => {
+    const joinGame = async (gameId: string, amount: number) => {
         try {
-            const response = await JoinGameQuery({ gameId, token });
+            setMessage("Connecting to a game");
+            setIsLoading(true);
+            const response = await JoinGameQuery({ gameId, token, amount });
             if (response.data.data.success) {
-                return history.push('/play-ground')
+                return history.push('/play-ground');
             }
         } catch (error: any) {
-            return alert(error.response.data.error)
+            return alert(error);
         }
     };
 
+    if (isLoading) {
+        return (<div style={{
+            margin: 30,
+            textAlign: 'center'
+        }}>
+            <h2>{message}</h2>
+            <Spin />
+        </div>)
+    }
 
     return (
         <div style={{
@@ -58,7 +77,7 @@ export default function RunningGamesPage() {
                 <div>
                     {GamesList.map((game: any, i: number) => {
                         return (
-                            <ViewList key={i} onClick={() => joinGame(game._id)}>
+                            <ViewList key={i} onClick={() => joinGame(game._id, game.amount)}>
                                 <div>
                                     <div>{game.starter ? game.starter.userName : 'ju'}</div>
                                     <div>{game.starter ? game.amount : 'ju'}</div>

@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import ButtonWithLoader from '../../Component/ButtonWithLoader/ButtonWithLoader';
 import Dice from '../../Component/Dice/Dice';
 import DiceRolling from '../../Component/Dice/DiceRolling';
-import { wrappedLocalStorage } from '../../functions';
+import { createWinnerStream, wrappedLocalStorage } from '../../functions';
 import { CheckIfUserIsInAGameQuery } from '../../Queries/CheckIfUserIsInAGameQuery';
 import { getGameByIdQuery } from '../../Queries/GetGameById';
 import { getGameThrows } from '../../Queries/GetGameThrowsQuery';
@@ -124,11 +124,13 @@ export default function PlaygroundPage({ }: any): ReactElement {
     const processWinnerMessage = (gDetails: any, uDetails: any) => {
         if (gDetails.winner && String(gDetails.winner) === String(uDetails._id)) {
             setWinnerMessage("You won the Game! Hurray");
+            // createWinnerStream(gDetails, uDetails);
         }
 
         if (gDetails.winner && String(gDetails.winner) !== String(uDetails._id)) {
             setWinnerMessage("You lost the Game! Sorry");
         }
+
 
     }
 
@@ -146,13 +148,8 @@ export default function PlaygroundPage({ }: any): ReactElement {
             if (userDetails._id === gameDetails?.joiner?._id) {
                 status = 'Player Two';
             }
-
             processWinnerMessage(gameDetails, userDetails);
-
-
-
             gameDetails.status = status
-
             setGameDetails(gameDetails);
         });
     }
@@ -178,17 +175,9 @@ export default function PlaygroundPage({ }: any): ReactElement {
         setTimeout(() => {
             updateGameThrows(gameDetails._id, token, [a, b]).then((result: any) => {
                 const { data } = result;
-                if (data.winner && data.winner === String(userDetails._id)) {
-                    setWinnerMessage("You won the Game! Hurray");
-                }
-
-                if (data.winner && data.winner !== String(userDetails._id)) {
-                    setWinnerMessage("You lost the Game! Sorry");
-                }
-
+                processWinnerMessage(data, userDetails);
                 setRolling(false);
                 setCanPlay(false);
-
             })
             return;
         }, 2000)
