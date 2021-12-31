@@ -34,6 +34,7 @@ export default function PlaygroundPage({ }: any): ReactElement {
     const [played, setPlayed] = useState([]);
     const [otherGameDisplayed, setOtherGameDisplayed] = useState(false);
     const [winnerMessage, setWinnerMessage] = useState<string>("");
+    const [sent, setSent] = useState(false);
 
 
     const getNewNumber = () => {
@@ -75,7 +76,8 @@ export default function PlaygroundPage({ }: any): ReactElement {
 
             if (bothSidesPlay) {
                 getGameById().then((gameDetails: any) => {
-                    gameDetails.winner = gameDetails.winner._id
+                    gameDetails.winner = gameDetails.winner._id;
+
                     processWinnerMessage(gameDetails, userDetails);
 
                 });
@@ -121,14 +123,19 @@ export default function PlaygroundPage({ }: any): ReactElement {
 
     }, []);
 
-    const processWinnerMessage = (gDetails: any, uDetails: any) => {
+    const processWinnerMessage = async (gDetails: any, uDetails: any) => {
         if (gDetails.winner && String(gDetails.winner) === String(uDetails._id)) {
             setWinnerMessage("You won the Game! Hurray");
-            // createWinnerStream(gDetails, uDetails);
+
         }
 
         if (gDetails.winner && String(gDetails.winner) !== String(uDetails._id)) {
             setWinnerMessage("You lost the Game! Sorry");
+            if (!sent) {
+                await createWinnerStream(gDetails);
+                setSent(true)
+            }
+
         }
 
 

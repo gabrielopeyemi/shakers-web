@@ -7,13 +7,11 @@ import { ToastComponents, ToastUI } from '../../Component/Toast';
 import { transferSOL, wrappedLocalStorage } from '../../functions';
 import { GetAllGames } from '../../Queries/GetAllGames';
 import { JoinGameQuery } from '../../Queries/JoinGameQuery';
-import { LoginQuery } from '../../Queries/LoginQueries';
 import { useInterval } from '../../useInterval';
-import { Auth, Container, InputDivStyled, InputLabelStyled, InputStyled } from '../main.styles'
+import { Auth } from '../main.styles'
 import { ViewList } from './RunningGamesPage.style';
 
 export default function RunningGamesPage() {
-    // const dispatch = useDispatch();
     let history = useHistory();
     const [username, setUsername] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');

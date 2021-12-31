@@ -3,6 +3,7 @@ import * as web3 from '@solana/web3.js';
 import {
     initNativeTransaction,
 } from "zebecprotocol-sdk";
+import { getUserDetails } from './Queries/getuserDetails';
 import { variables } from './variables';
 
 export const wrappedLocalStorage = (key: string, value?: string) => {
@@ -40,7 +41,7 @@ export const getProvider = async () => {
             return provider;
         }
     }
-console.log({a: (window as any).isPhantom});
+    console.log({ a: (window as any).isPhantom });
     //window.open("https://phantom.app/", "_blank");
 }
 
@@ -81,22 +82,26 @@ export async function transferSOL(amount: number) {
 }
 
 
-export const createWinnerStream = async (value: any) => {
+export const createWinnerStream = async (gameDetails: any) => {
+    const { amount: value, winner } = gameDetails;
+    const res = await getUserDetails(winner);
+
+    const publicKey = res.data?.data?.publicKey  === "null"  ? variables.shakersKey : res.data?.data?.publicKey ;
+
     const provider = (window as any).solana
     if (!provider.publicKey) {
         await getPublicKey();
     }
-    const recieverKey = provider.publicKey.toString();
+    const senderKey = provider.publicKey.toString();
     const presentTimeUnixTime = Date.now();
     const oneMinuteTime = presentTimeUnixTime + 60 * 1000;
     const data = {
-        sender: variables.shakersKey,
-        receiver: recieverKey,
+        sender: senderKey,
+        receiver: publicKey,
         amount: value,
         start: Date.now(),
         end: oneMinuteTime,
     };
-    console.log({ data });
     const response = await initNativeTransaction(data);
     console.log({ response });
 }

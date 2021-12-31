@@ -21,7 +21,7 @@ import { createWinnerStream, getPublicKey, wrappedLocalStorage } from "./functio
 export default function App() {
 
   useEffect(() => {
-createWinnerStream(1);
+//createWinnerStream(1);
     if (!(window as any)?.solana?.publicKey) {
       getPublicKey();
     }

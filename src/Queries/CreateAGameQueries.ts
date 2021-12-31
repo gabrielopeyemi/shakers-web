@@ -10,20 +10,22 @@ export interface PropsArgs {
 
 const userPublicKey = wrappedLocalStorage('PUBLIC_KEY').get();
 
-
-
 export const CreateAGameQuery = async (props: PropsArgs) => {
   const { token, amount } = props;
 
-  const sent = await transferSOL(amount);
+/**
+ * 
+const sent = await transferSOL(amount);
 
   if (!sent) {
     throw ("An error occured while sending the token");
   }
+ */
+  
 
   try {
     const data: any = await server.post({
-      url: `/games/start/${amount.toString()}`,
+      url: `/games/start/${amount.toString()}/${userPublicKey}`,
       data: {
         amount,
       },
